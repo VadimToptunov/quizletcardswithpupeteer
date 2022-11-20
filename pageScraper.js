@@ -1,5 +1,7 @@
+const fs = require('fs');
 const scraperObject = {
     url: 'https://quizlet.com/gb/341978129/%CE%9A%CE%B1%CF%84%CE%AC%CE%BB%CE%BF%CE%B3%CE%BF%CF%82-%CF%83%CE%B5-%CE%B5%CE%BB%CE%BB%CE%B7%CE%BD%CE%B9%CE%BA%CE%AE-%CF%84%CE%B1%CE%B2%CE%AD%CF%81%CE%BD%CE%B1-greek-taverns-menu-diagram/',
+
     async scraper(browser){
         let page = await browser.newPage();
         await page.setDefaultNavigationTimeout(20000);
@@ -14,17 +16,14 @@ const scraperObject = {
         console.log("Accept button clicked.");
         await autoScroll(page);
 
-
-        //TODO: Debug the output of the data, now it does not find text elements and does not prints them out.
         let words = await page.$$eval('.SetPageTerm-contentWrapper',
             elements=> {
-                let word = elements.filter(el => el.querySelector('.TermText.notranslate.lang-el').textContent);
-                let translation = elements.filter(el => el.querySelector('.TermText.notranslate.lang-en').textContent);
-                let line = word + ' - ' + translation;
-
-            elements.map(line);
+                return elements.map(el =>
+                    `${el.querySelector('.TermText.notranslate.lang-el').textContent} - ${el.querySelector('.TermText.notranslate.lang-en').textContent}`
+                );
             });
         await console.log(words);
+        saveLexiconToFile(words);
         browser.close();
     }
 }
@@ -47,4 +46,13 @@ async function autoScroll(page){
         });
     });
 }
+
+function saveLexiconToFile(words){
+    var stream = fs.createWriteStream("Tavern_lexicon.txt", {flags:'a'});
+    words.forEach( function (item) {
+        stream.write(item + "\n");
+    });
+    stream.end();
+}
+
 module.exports = scraperObject;
