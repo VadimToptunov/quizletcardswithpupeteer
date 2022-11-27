@@ -1,4 +1,4 @@
 # Project exclude paths
 /node_modules/
 .idea
-Tavern_lexicon.txt
+*.txt

@@ -1,12 +1,11 @@
 const fs = require('fs');
 const scraperObject = {
-    url: 'https://quizlet.com/gb/341978129/%CE%9A%CE%B1%CF%84%CE%AC%CE%BB%CE%BF%CE%B3%CE%BF%CF%82-%CF%83%CE%B5-%CE%B5%CE%BB%CE%BB%CE%B7%CE%BD%CE%B9%CE%BA%CE%AE-%CF%84%CE%B1%CE%B2%CE%AD%CF%81%CE%BD%CE%B1-greek-taverns-menu-diagram/',
 
-    async scraper(browser){
+    async scraper(browser, link, filename){
         let page = await browser.newPage();
         await page.setDefaultNavigationTimeout(20000);
-        console.log(`Navigating to ${this.url}...`);
-        await page.goto(this.url);
+        console.log(`Navigating to ${link}...`);
+        await page.goto(link);
         await page.setViewport({
             width: 1200,
             height: 800
@@ -23,7 +22,7 @@ const scraperObject = {
                 );
             });
         await console.log(words);
-        saveLexiconToFile(words);
+        saveLexiconToFile(words, filename);
         browser.close();
     }
 }
@@ -47,8 +46,8 @@ async function autoScroll(page){
     });
 }
 
-function saveLexiconToFile(words){
-    var stream = fs.createWriteStream("Tavern_lexicon.txt", {flags:'a'});
+function saveLexiconToFile(words, filename){
+    var stream = fs.createWriteStream(filename, {flags:'a'});
     words.forEach( function (item) {
         stream.write(item + "\n");
     });
