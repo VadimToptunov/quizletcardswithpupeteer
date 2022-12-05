@@ -5,7 +5,7 @@
   "usage": "npm run start <quizlet_cards_page_url> <filename_to_save_in>",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "node index.js "
   },
   "keywords": [],
@@ -13,5 +13,13 @@
   "license": "ISC",
   "dependencies": {
     "puppeteer": "^19.2.2"
+  },
+  "devDependencies": {
+    "jest": "^29.3.1",
+    "jest-puppeteer": "^6.1.1"
+  },
+  "jest": {
+    "verbose": true,
+    "preset": "jest-puppeteer"
   }
 }
