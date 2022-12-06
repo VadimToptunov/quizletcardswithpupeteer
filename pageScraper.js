@@ -1,9 +1,8 @@
 const fs = require('fs');
 const scraperObject = {
-
     async scraper(browser, link, filename){
         let page = await browser.newPage();
-        await page.setDefaultNavigationTimeout(20000);
+        await page.setDefaultNavigationTimeout(50000);
         console.log(`Navigating to ${link}...`);
         await page.goto(link);
         await page.setViewport({
@@ -54,4 +53,6 @@ function saveLexiconToFile(words, filename){
     stream.end();
 }
 
-module.exports = scraperObject;
+module.exports = {
+    scraperObject
+};
